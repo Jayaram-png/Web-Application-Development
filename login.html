@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - IBMS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<style>
+    body{
+        background-color: aliceblue;
+    }
+</style>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="accounts.html">Accounts</a></li>
+      <li><a href="credit.html">Credit Score</a></li>
+      <li><a href="bill.html">Bill Payment</a></li>
+      <li><a href="update.html">Update Credentials</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>Login</h2>
+    <form id="login-form" onsubmit="return loginUser(event)">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required oninput="checkForm()"/>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required oninput="checkForm()"/>
+      
+      <input type="submit" id="submit-btn" value="Login" disabled />
+    </form>
+  </div>
+
+  <script>
+    function checkForm() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = !(username && password);
+    }
+
+    function loginUser(event) {
+      event.preventDefault();
+      window.location.href = 'accounts.html';
+    }
+  </script>
+</body>
+</html>
