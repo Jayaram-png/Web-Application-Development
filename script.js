@@ -24,7 +24,12 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         if (data.success) {
           localStorage.setItem("username", data.username);
@@ -34,16 +39,24 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Invalid credentials. Try again.");
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error('There was a problem with the fetch operation:', err);
+        alert('An error occurred. Please try again later.');
+      });
     });
   }
-
+  
   // ============== ACCOUNTS ==============
   if (document.getElementById("account-details")) {
     let username = localStorage.getItem("username");
     if (username) {
       fetch(`http://localhost:5001/accounts/${username}`)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(accounts => {
         let html = `<h3>Welcome, ${username}!</h3>`;
         accounts.forEach(account => {
@@ -51,7 +64,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         document.getElementById("account-details").innerHTML = html;
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error('There was a problem with the fetch operation:', err);
+        alert('An error occurred while fetching account details. Please try again later.');
+      });
     } else {
       document.getElementById("account-details").innerHTML = "<p>Please <a href='login.html'>login</a> to see your account details.</p>";
     }
@@ -72,34 +88,65 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, biller, amount, dueDate })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         alert(data.message);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error('There was a problem with the fetch operation:', err);
+        alert('An error occurred while processing the bill payment. Please try again later.');
+      });
     });
   }
-
-  // ============== CREDIT SCORE ==============
-  if (document.getElementById("credit-score")) {
-    let username = localStorage.getItem("username");
-    if (username) {
-      fetch(`http://localhost:5001/credit-score/${username}`)
-      .then(response => response.json())
-      .then(data => {
-        let scoresHtml = `<p>Current Credit Score: ${data.currentScore}</p>`;
-        if (data.previousScores.length) {
-          scoresHtml += `<ul>`;
-          data.previousScores.forEach(score => {
-            scoresHtml += `<li>${score}</li>`;
-          });
-          scoresHtml += `</ul>`;
-        }
-        document.getElementById("credit-score").innerHTML = scoresHtml;
-      })
-      .catch(err => console.error(err));
+  document.addEventListener("DOMContentLoaded", function () {
+    // ...existing code...
+  
+    // ============== CREDIT SCORE ==============
+    function fetchCreditScore() {
+      let username = localStorage.getItem("username");
+      if (username) {
+        fetch(`http://localhost:5001/credit-score/${username}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          let scoresHtml = `<p>Current Credit Score: ${data.currentScore}</p>`;
+          if (data.previousScores.length) {
+            scoresHtml += `<ul>`;
+            data.previousScores.forEach(score => {
+              scoresHtml += `<li>${score}</li>`;
+            });
+            scoresHtml += `</ul>`;
+          }
+          document.querySelector("#credit-info-container").innerHTML = scoresHtml;
+        })
+        .catch(err => {
+          console.error('There was a problem with the fetch operation:', err);
+          alert('An error occurred while fetching the credit score. Please try again later.');
+        });
+      }
     }
-  }
+  
+    if (document.getElementById("credit-history")) {
+      fetchCreditScore(); // Fetch on page load
+  
+      // Add event listener for refresh button
+      const refreshButton = document.querySelector("#refresh-credit");
+      if (refreshButton) {
+        refreshButton.addEventListener("click", fetchCreditScore);
+      }
+    }
+  
+    // ...existing code...
+  });
 
   // ============== UPDATE PASSWORD ==============
   const updateForm = document.querySelector("#update-form");
@@ -114,10 +161,19 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, newPassword })
       })
-      .then(response => response.json())
-      .then(data => alert(data.message))
-      .catch(err => console.error(err));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert(data.message);
+      })
+      .catch(err => {
+        console.error('There was a problem with the fetch operation:', err);
+        alert('An error occurred while updating the password. Please try again later.');
+      });
     });
   }
-
 });
