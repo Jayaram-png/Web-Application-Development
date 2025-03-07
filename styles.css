@@ -1,9 +1,10 @@
+
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
 
 /* General Styles */
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: 'Poppins', 'Times New Roman', Times, serif, sans-serif;
   background: #f5f7fa;
   color: #333;
   margin: 0;
@@ -80,6 +81,7 @@ p {
   margin: 15px 0;
 }
 
+
 /* Form Styling */
 form {
   max-width: 500px;
@@ -121,6 +123,8 @@ input[type="submit"] {
   cursor: pointer;
   border-radius: 5px;
   transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
 }
 
 input[type="submit"]:disabled {
@@ -130,6 +134,15 @@ input[type="submit"]:disabled {
 
 input[type="submit"]:hover:enabled {
   background: #002b80;
+}
+/* style.css */
+.login-box {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 /* Account Details */
