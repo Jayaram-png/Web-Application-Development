@@ -7,7 +7,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve all static files (HTML, CSS, JS) from the "public" folder
-app.use(express.static("public"));
+app.use(express.static(".")); // Serve all static files from the current directory
 
 // Dummy user data for demonstration
 let users = {
@@ -82,7 +82,7 @@ app.post("/pay-bill", (req, res) => {
 });
 
 // 5. Update Credentials
-app.post("/update-credentials", (req, res) => {
+app.post("/update-password", (req, res) => {
   const { username, newPassword } = req.body;
   if (users[username]) {
     users[username].password = newPassword;
